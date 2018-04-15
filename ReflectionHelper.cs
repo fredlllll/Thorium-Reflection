@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Thorium_Reflection
+namespace Thorium.Reflection
 {
     public static class ReflectionHelper
     {
