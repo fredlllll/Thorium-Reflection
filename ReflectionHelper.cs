@@ -39,7 +39,7 @@ namespace Thorium.Reflection
 
         public static bool IsNullableType(Type t)
         {
-            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>);
+            return t.IsGenericType && t.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
 
         /// <summary>
@@ -72,16 +72,19 @@ namespace Thorium.Reflection
         /// <returns></returns>
         private static MethodBase GetCallingMethod()
         {
+            MethodBase method;
+            StackFrame frame;
+
             StackTrace trace = new StackTrace();
             for(int offset = 2; ; offset++)
             {
-                var frame = trace.GetFrame(offset);
-                var method = frame.GetMethod();
+                frame = trace.GetFrame(offset);
+                method = frame.GetMethod();
                 if(method.DeclaringType == null)
                 {
                     return null;
                 }
-                if(!method.DeclaringType.Module.Name.Equals("mscorlib.dll", StringComparison.OrdinalIgnoreCase))
+                else if(!method.DeclaringType.Module.Name.Equals("mscorlib.dll", StringComparison.OrdinalIgnoreCase))
                 {
                     return method;
                 }
